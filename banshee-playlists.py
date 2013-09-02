@@ -48,7 +48,7 @@ if args.user_playlists == True or args.smart_playlists == False:
         playlistsOut.append([x, 'Playlist'])
 
 # Gather CoreSmartPlaylist names if required
-if args.smart_playlists == True:
+if args.smart_playlists == True or args.user_playlists == False:
     smartplaylistsSQL = 'Select Name from CoreSmartPlaylists Where PrimarySourceID = 1'
     for x in c.execute(smartplaylistsSQL):
         playlistsOut.append([x, 'SmartPlaylist'])
