@@ -2,7 +2,7 @@
 # Export playlists from the banshee database
 
 import os
-import urllib
+from urllib.parse import unquote
 import sqlite3
 import codecs
 import argparse
@@ -68,16 +68,16 @@ if args.playlists != "":
 # List playlists and exit if required
 if args.list_playlists == True:
     for x in playlistsOut:
-        print x[0][0]
+        print(x[0][0])
     exit()
 
 # Remove old playlists if required
 if args.remove_old:
     for x in sorted(os.listdir(args.output_dir)):
         if os.path.splitext(x)[1] == '.m3u':
-            print 'Removing "' + x + '"...',
+            print('Removing "' + x + '"...'),
             os.remove(os.path.join(args.output_dir,x))
-            print 'Done'
+            print('Done')
 
 # Loop through CorePlaylists
 for x in sorted(playlistsOut):
@@ -92,8 +92,8 @@ for x in sorted(playlistsOut):
                             't.PrimarySourceID = 1 and '+\
                             'p.Name = "' + playlistName +\
                       '" Group By p.Name, a.Name, t.Title, t.Uri'
-    
-    print 'Writing "' + playlistName + '.m3u"...',
+
+    print('Writing "' + playlistName + '.m3u"...'),
     # Open current playlist file for writing
     playOut = codecs.open(os.path.join(args.output_dir, playlistName + '.m3u'), 'w', "utf-8-sig")
     playOut.write(m3uHeader + '\n')
@@ -102,7 +102,7 @@ for x in sorted(playlistsOut):
         duration = int(y[0])
         artist = y[1] if y[1] != None else ""
         title = y[2] if y[2] != None else ""
-        path = unicode(urllib.unquote(y[3][7:].encode('ascii')), "utf-8")
+        path = unquote(y[3][7:])
         # Make playlist paths relative
         if args.absolute == False:
             path = os.path.relpath(path, args.output_dir)
@@ -113,4 +113,4 @@ for x in sorted(playlistsOut):
         playOut.write(metaHeader + str(duration) + ',' + artist + ' - ' + title + '\n')
         playOut.write(path + '\n')
     playOut.close()
-    print 'Done'
+    print('Done')
