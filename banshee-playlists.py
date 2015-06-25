@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Export playlists from the banshee database
 
 import os
@@ -75,7 +75,7 @@ if args.list_playlists == True:
 if args.remove_old:
     for x in sorted(os.listdir(args.output_dir)):
         if os.path.splitext(x)[1] == '.m3u':
-            print('Removing "' + x + '"...'),
+            print('Removing "' + x + '"...',end="")
             os.remove(os.path.join(args.output_dir,x))
             print('Done')
 
@@ -93,7 +93,7 @@ for x in sorted(playlistsOut):
                             'p.Name = "' + playlistName +\
                       '" Group By p.Name, a.Name, t.Title, t.Uri'
 
-    print('Writing "' + playlistName + '.m3u"...'),
+    print('Writing "' + playlistName + '.m3u"...',end="")
     # Open current playlist file for writing
     playOut = codecs.open(os.path.join(args.output_dir, playlistName + '.m3u'), 'w', "utf-8-sig")
     playOut.write(m3uHeader + '\n')
